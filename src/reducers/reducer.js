@@ -70,6 +70,9 @@ const personDeleted = (state) => {
 
 const cancel = (state) => {
     const newState = JSON.parse(JSON.stringify(state));
+    if(newState.view==='add'){
+        newState.people.pop();
+    }
     newState.selectedPersonId = undefined;
     newState.view = 'list';
     return newState;

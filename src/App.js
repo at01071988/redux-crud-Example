@@ -6,16 +6,12 @@ import './App.css';
 
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-       }
-
 
     render() {
         console.log('render', this.state);
         switch (this.props.view) {
             case 'list':
-                return <PersonList newPerson={this.createPerson}/>
+                return <PersonList/>
             case 'edit':
                 return <PersonEdit/>
             case 'add':
