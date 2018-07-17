@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+
 
 class PersonEdit extends Component {
 
     constructor(props) {
         super(props);
-        this.state = JSON.parse(JSON.stringify(props.person));
+        const person = this.props.people.find(p => p.id === this.props.personId)
+        this.state = JSON.parse(JSON.stringify(person));
     }
 
     changed = (event) => {
@@ -34,12 +37,26 @@ class PersonEdit extends Component {
                         onChange={this.changed}
                     />
                 </div>
-                <input type="button" onClick={() => this.props.update(this.state)} value="Save" />
-                <input type="button" onClick={() => this.props.delete(this.state)} value="Delete" />
-                <input type="button" onClick={() => this.props.cancel(this.state)} value="Cancel" />
+                <input type="button" onClick={() => this.props.personUpdated(this.state)} value="Save"/>
+                <input type="button" onClick={() => this.props.personDeleted()} value="Delete"/>
+                <input type="button" onClick={() => this.props.cancel()} value="Cancel"/>
             </div>
         );
     }
 }
 
-export default PersonEdit;
+const mapStateToProps = (state) => {
+    return {
+        people: state.people,
+        personId: state.selectedPersonId
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        personUpdated: (newPerson) => dispatch({type: 'PERSON_UPDATE', newPerson}),
+        personDeleted: () => dispatch({type: 'PERSON_DELETE'}),
+        cancel: () => dispatch({type: 'CANCEL'})
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PersonEdit);

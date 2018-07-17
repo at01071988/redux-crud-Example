@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 class PersonList extends Component {
 
@@ -16,10 +17,23 @@ class PersonList extends Component {
                 <ul>
                     {this.people}
                 </ul>
-                <input type="button" onClick={() => this.props.newPerson()} value="New Person" />
+                <input type="button" onClick={() => this.props.createPerson()} value="New Person"/>
             </div>
         );
     }
 }
 
-export default PersonList;
+const mapStateToProps = (state) => {
+    return {
+        people: state.people
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        personSelected: (id) => dispatch({type: 'PERSON_SELECTED', id}),
+        createPerson: () => dispatch({type: 'PERSON_ADD'})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonList);
